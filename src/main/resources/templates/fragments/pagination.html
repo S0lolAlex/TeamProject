@@ -1,0 +1,39 @@
+<div th:fragment="pagination">
+    <nav aria-label="Page navigation example" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                <a class="page-link" th:href="@{${pageUrl} + ${currentPage - 1}}">Previous</a>
+            </li>
+            <th:block th:if="${totalPages <= 10}">
+                <li th:each="i: ${#numbers.sequence(1, totalPages)}"
+                    th:class="${currentPage != i ? 'page-item' : 'page-item active'}">
+                    <a class="page-link" th:href="@{${pageUrl} + ${i}}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <th:block th:if="${totalPages > 10}">
+                <th:block th:if="${currentPage <= 6 || currentPage >= totalPages - 4}">
+                    <li th:each="i: ${#numbers.sequence(1, 6)}"
+                        th:class="${currentPage != i ? 'page-item' : 'page-item active'}">
+                        <a class="page-link" th:href="@{${pageUrl} + ${i}}">[[${i}]]</a>
+                    </li>
+                    <a class="page-link" th:href="@{${pageUrl} + 6}">...</a>
+                    <li th:each="i: ${#numbers.sequence(totalPages - 4, totalPages)}"
+                        th:class="${currentPage != i ? 'page-item' : 'page-item active'}">
+                        <a class="page-link" th:href="@{${pageUrl} + ${i}}">[[${i}]]</a>
+                    </li>
+                </th:block>
+            </th:block>
+            <th:block th:if="${currentPage > 6 && currentPage < totalPages - 4}">
+                <a class="page-link" th:href="@{${pageUrl} + ${currentPage - 6}}">...</a>
+                <li th:each="i: ${#numbers.sequence(currentPage - 4, currentPage + 4)}"
+                    th:class="${currentPage != i ? 'page-item' : 'page-item active'}">
+                    <a class="page-link" th:href="@{${pageUrl} + ${i}}">[[${i}]]</a>
+                </li>
+                <a class="page-link" th:href="@{${pageUrl} + ${currentPage + 6}}">...</a>
+            </th:block>
+            <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                <a class="page-link" th:href="@{${pageUrl} + ${currentPage + 1}}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

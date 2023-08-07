@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/chmod'
+    args: ['+x', './mvnw']
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean', 'package', '--batch-mode', '-DskipTests', '-Dhttp.keepAlive=false', '-f=pom.xml', '--quiet']

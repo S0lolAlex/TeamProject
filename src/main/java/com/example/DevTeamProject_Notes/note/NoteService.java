@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,10 +48,16 @@ public class NoteService {
     }
 
     public void copyLink(String url) {
-        StringSelection stringSelection = new StringSelection(url);
-        System.setProperty("java.awt.headless", "false");
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
+        String command = "xclip -sel clip";
+        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process process = processBuilder.start();
+            process.getOutputStream().write(url.getBytes());
+            process.getOutputStream().close();
+            int exitCode = process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

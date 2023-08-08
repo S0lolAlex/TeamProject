@@ -48,16 +48,10 @@ public class NoteService {
     }
 
     public void copyLink(String url) {
-        String command = "xclip -sel clip";
-        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process process = processBuilder.start();
-            process.getOutputStream().write(url.getBytes());
-            process.getOutputStream().close();
-            int exitCode = process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        StringSelection stringSelection = new StringSelection(url);
+        System.setProperty("java.awt.headless", "false");
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
 
 }

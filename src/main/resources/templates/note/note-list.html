@@ -57,7 +57,7 @@
                                         </svg>
                                     </button>
                                 </form>
-                                <form method="post" th:action="@{/note/share/{id}(id=${note.id})}">
+                                <form method="get" th:action="@{/note/share/{id}(id=${note.id})}">
                                     <input type="hidden" name="id" th:value="${note.id}">
                                     <button type="submit" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
                                             data-bs-title="Копіювати посилання">

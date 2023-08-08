@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +114,7 @@ public class NoteController {
     }
 
     @PostMapping("/share/{id}")
-    public String getLink(@PathVariable("id") UUID id, Model model, HttpServletRequest request, Principal principal) {
+    public void getLink(@PathVariable("id") UUID id, Model model, HttpServletRequest request, Principal principal) {
         String fullUrl;
         Note note = noteService.getById(id);
         model.addAttribute("note", note);
@@ -120,7 +123,8 @@ public class NoteController {
         } else {
             fullUrl = request.getRequestURL().toString();
         }
-        noteService.copyLink(fullUrl);
-        return "redirect:/note/list";
+        StringSelection stringSelection = new StringSelection(fullUrl);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection,null);
     }
 }
